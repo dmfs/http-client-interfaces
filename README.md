@@ -10,6 +10,10 @@ This approach allows to use different HTTP implementations without changing the 
 
 Note, this does not intend to be a full featured HTTP client library. It's kind of a minimal interface of an HTTP client and a few helper methods.
 
+## Requirements
+
+This library has no special requirements.
+
 ## Example
 
 Using these interfaces a simple `GET` request to receive a JSON file is described like so
