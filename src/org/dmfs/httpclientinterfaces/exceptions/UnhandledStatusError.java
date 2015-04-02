@@ -22,7 +22,7 @@ import org.dmfs.httpclientinterfaces.IResponseHandler;
 
 
 /**
- * An exception that's thrown when a reponse was not handled by an {@link IResponseHandler}.
+ * An exception that's thrown when a response was not handled by an {@link IResponseHandler}.
  * <p>
  * There are three major subclasses: {@link RedirectionException} for <code>3xx</code> response status codes, {@link ClientError} for <code>4xx</code> response
  * status codes and {@link ServerError} for <code>5xx</code> response status codes, some of them having subclasses themselves. Implementations should always
@@ -104,6 +104,10 @@ public class UnhandledStatusError extends Exception
 			if (status == HttpStatus.NOT_FOUND)
 			{
 				throw new NotFoundError(message);
+			}
+			else if (status == HttpStatus.UNAUTHORIZED)
+			{
+				throw new UnauthorizedError(message);
 			}
 
 			throw new ClientError(status, message);
