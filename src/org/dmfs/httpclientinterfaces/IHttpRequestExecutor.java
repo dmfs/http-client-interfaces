@@ -73,7 +73,6 @@ public interface IHttpRequestExecutor
 	 *            The request to execute.
 	 * @param callback
 	 *            An {@link IResponseCallback} to call with the result of the request.
-	 * @return The result, i.e. the handled server response.
 	 */
 	public <T> void execute(URI uri, IHttpRequest<T> request, IResponseCallback<T> callback);
 
@@ -91,7 +90,6 @@ public interface IHttpRequestExecutor
 	 *            An {@link IResponseCallback} to call with the result of the request.
 	 * @param redirectionCallback
 	 *            An {@link IRedirectionCallback} that determines how to handle any redirections.
-	 * @return The result, i.e. the handled server response.
 	 */
 	public <T> void execute(URI uri, IHttpRequest<T> request, IResponseCallback<T> callback, IRedirectionCallback redirectionCallback);
 }

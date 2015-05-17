@@ -43,7 +43,7 @@ public class FollowSecureRedirectionCallback implements IRedirectionCallback
 	/**
 	 * Returns an instance of {@link FollowSecureRedirectionCallback}.
 	 * 
-	 * @return
+	 * @return A static instance of {@link FollowSecureRedirectionCallback}.
 	 */
 	public static FollowSecureRedirectionCallback getInstance()
 	{

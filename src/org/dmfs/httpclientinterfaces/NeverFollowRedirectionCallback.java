@@ -40,7 +40,7 @@ public class NeverFollowRedirectionCallback implements IRedirectionCallback
 	/**
 	 * Returns an instance of {@link NeverFollowRedirectionCallback}.
 	 * 
-	 * @return
+	 * @return A static instance of {@link NeverFollowRedirectionCallback}.
 	 */
 	public static NeverFollowRedirectionCallback getInstance()
 	{

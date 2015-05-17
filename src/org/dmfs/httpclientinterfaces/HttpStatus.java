@@ -365,7 +365,7 @@ public final class HttpStatus
 	 * Parse an HTTP status line for the status code. The status line must comply to <a href="https://tools.ietf.org/html/rfc7230#section-3.1.2">RFC 7230
 	 * section 3.1.2</a>.
 	 * 
-	 * @param status
+	 * @param statusLine
 	 *            A {@link String} containing an HTTP status line.
 	 * @return The status code or {@code -1} if no valid status code has been found.
 	 */

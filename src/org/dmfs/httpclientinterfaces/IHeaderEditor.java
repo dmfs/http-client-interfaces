@@ -26,7 +26,7 @@ public interface IHeaderEditor
 {
 	/**
 	 * Set a request header, overriding any other headers of the same name. Setting a <code>null</code> value will remove that header and has the same effect as
-	 * calling {@link #removeHeader(String)}
+	 * calling {@link #removeHeaders(String)}
 	 * 
 	 * @param header
 	 *            The name of the header to set.
