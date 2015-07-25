@@ -17,6 +17,10 @@
 
 package org.dmfs.httpclientinterfaces;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  * Represents an HTTP method. This class provides static members for HTTP methods defined in <a href="https://tools.ietf.org/html/rfc7231#section-4.3">RFC 7231,
  * section 4.3</a>.
@@ -83,11 +87,30 @@ public final class HttpMethod
 
 
 	/**
+	 * Returns a known method for the given verb.
+	 * 
+	 * @param verb
+	 *            The verb of the method.
+	 * @return An {@link HttpMethod} or <code>null</code> if no method with that verb is known.
+	 */
+	public final static HttpMethod get(String verb)
+	{
+		synchronized (REGISTERED_METHODS)
+		{
+			return REGISTERED_METHODS.get(verb);
+		}
+	}
+
+
+	/**
 	 * Creates a non-safe and non-idempotent {@link HttpMethod} for the given verb.
 	 * 
 	 * @param verb
 	 *            The verb of the method.
 	 * @return An {@link HttpMethod}.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             If an idempotent or safe method with the same verb has already been created.
 	 */
 	public final static HttpMethod method(String verb)
 	{
@@ -101,6 +124,9 @@ public final class HttpMethod
 	 * @param verb
 	 *            The verb of the method.
 	 * @return An {@link HttpMethod}.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             If a non-idempotent or safe method with the same verb has already been created.
 	 */
 	public final static HttpMethod idempotentMethod(String verb)
 	{
@@ -114,6 +140,9 @@ public final class HttpMethod
 	 * @param verb
 	 *            The verb of the method.
 	 * @return An {@link HttpMethod}.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             If a non-safe method with the same verb has already been created.
 	 */
 	public final static HttpMethod safeMethod(String verb)
 	{
@@ -131,11 +160,32 @@ public final class HttpMethod
 	 * @param idempotent
 	 *            <code>true</code> if the method is idempotent, <code>false</code> otherwise.
 	 * @return An {@link HttpMethod}.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the verb has already been created with different properties.
 	 */
 	public final static HttpMethod Method(String verb, boolean safe, boolean idempotent)
 	{
-		return new HttpMethod(verb, safe, idempotent);
+		synchronized (REGISTERED_METHODS)
+		{
+			HttpMethod method = REGISTERED_METHODS.get(verb);
+			if (method == null)
+			{
+				return new HttpMethod(verb, safe, idempotent);
+			}
+
+			if (method.safe != safe || method.idempotent != idempotent)
+			{
+				throw new IllegalArgumentException("Attempt to re-register a verb with different semantics!");
+			}
+			return method;
+		}
 	}
+
+	/**
+	 * A map to store all known HTTP methods. It's used by {@link #get(String)} to return an appropriate {@link HttpMethod} instance.
+	 */
+	private final static Map<String, HttpMethod> REGISTERED_METHODS = new HashMap<String, HttpMethod>(20);
 
 	/**
 	 * The HTTP verb of this method.
@@ -171,8 +221,46 @@ public final class HttpMethod
 	 */
 	private HttpMethod(String verb, boolean safe, boolean idempotent)
 	{
+		if (verb == null)
+		{
+			throw new IllegalArgumentException("Method verb must not be null");
+		}
+
 		this.verb = verb;
 		this.safe = safe;
 		this.idempotent = idempotent;
+
+		register();
+	}
+
+
+	/**
+	 * Register this {@link HttpMethod} in {@link #REGISTERED_METHODS}.
+	 */
+	private void register()
+	{
+		synchronized (REGISTERED_METHODS)
+		{
+			REGISTERED_METHODS.put(verb, this);
+		}
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return verb.hashCode();
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof HttpMethod))
+		{
+			return false;
+		}
+		HttpMethod other = (HttpMethod) obj;
+		return obj == this || verb.equals(other.verb) && safe == other.safe && idempotent == other.idempotent;
 	}
 }
