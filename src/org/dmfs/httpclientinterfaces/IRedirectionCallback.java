@@ -23,7 +23,7 @@ import org.dmfs.httpclientinterfaces.exceptions.RedirectionException;
 
 
 /**
- * The inferface of a redirection handler that knows how to handle a redirection response.
+ * The interface of a redirection handler that knows how to handle a redirection response.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */

@@ -18,7 +18,7 @@
 package org.dmfs.httpclientinterfaces.exceptions;
 
 /**
- * An {@link Exception} that's thrown when an unrecoverable protocol error at application level ocurred while handling a response.
+ * An {@link Exception} that's thrown when an unrecoverable protocol error at application level occurred while handling a response.
  * <p>
  * An example of a {@link ProtocolException} is if the XML in the response of an XML-based protocol is not well-formed or the server returned a status code
  * that's not allowed for this kind of request.

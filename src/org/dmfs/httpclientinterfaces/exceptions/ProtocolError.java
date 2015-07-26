@@ -18,7 +18,7 @@
 package org.dmfs.httpclientinterfaces.exceptions;
 
 /**
- * An {@link Exception} that's thrown when an error at application level ocurred while handling a response. This is to be used for errors that are valid
+ * An {@link Exception} that's thrown when an error at application level occurred while handling a response. This is to be used for errors that are valid
  * responses within the scope of the application protocol.
  * <p>
  * An example of a ProtocolError is when you try to upload a file but the server refuses to store it for a specific reason.

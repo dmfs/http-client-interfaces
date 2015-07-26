@@ -21,7 +21,7 @@ import java.io.IOException;
 
 
 /**
- * An {@link Exception} that's thrown when an error at HTTP level ocurred. Some implementations might chose to throw an {@link IOException} or a subclass of it
+ * An {@link Exception} that's thrown when an error at HTTP level occurred. Some implementations might chose to throw an {@link IOException} or a subclass of it
  * instead of this one.
  * 
  * @author Marten Gajda <marten@dmfs.org>

@@ -38,9 +38,9 @@ public interface IHttpResponseEntity
 
 
 	/**
-	 * Returns the lenght of the content or a negative number if it's not known.
+	 * Returns the length of the content or a negative number if it's not known.
 	 * 
-	 * @return The content lenght or a negative number.
+	 * @return The content length or a negative number.
 	 * @throws IOException
 	 */
 	public long getContentLength() throws IOException;

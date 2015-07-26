@@ -41,7 +41,7 @@ public interface IHttpResponse
 	 * 
 	 * @param header
 	 *            The name of the header.
-	 * @return The number of occurences of the given header.
+	 * @return The number of occurrences of the given header.
 	 */
 	public int getHeaderCount(String header);
 

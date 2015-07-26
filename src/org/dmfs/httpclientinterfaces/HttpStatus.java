@@ -301,7 +301,7 @@ public final class HttpStatus
 	public final static int INSUFFICIENT_STORAGE = 507;
 
 	/**
-	 * A map of codes to their respectice reasons.
+	 * A map of codes to their respective reasons.
 	 */
 	private final static Map<Integer, String> REASONS = buildReasonMap();
 

@@ -249,7 +249,7 @@ public class ContentType
 
 
 	/**
-	 * Indicates whether another {@link ContentType} is the same as this one. In contrase to {@link #equals(Object)} this also takes any parameters into
+	 * Indicates whether another {@link ContentType} is the same as this one. In contrast to {@link #equals(Object)} this also takes any parameters into
 	 * account.
 	 * 
 	 * @param other

@@ -47,7 +47,7 @@ public interface IResponseCallback<T>
 
 
 	/**
-	 * Called if any error ocurred during the exectution of the request.
+	 * Called if any error occurred during the execution of the request.
 	 * 
 	 * @param e
 	 *            The {@link Exception} that was thrown.

@@ -27,7 +27,7 @@ import org.dmfs.httpclientinterfaces.exceptions.UnhandledStatusError;
 
 
 /**
- * The inferface of an instances that knows how to execute an {@link IHttpRequest}.
+ * The interface of an instances that knows how to execute an {@link IHttpRequest}.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
