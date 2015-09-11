@@ -30,6 +30,11 @@ import java.util.Map;
 public final class HttpMethod
 {
 	/**
+	 * A map to store all known HTTP methods. It's used by {@link #get(String)} to return an appropriate {@link HttpMethod} instance.
+	 */
+	private final static Map<String, HttpMethod> REGISTERED_METHODS = new HashMap<String, HttpMethod>(20);
+
+	/**
 	 * HTTP Method GET
 	 * 
 	 * @see <a href="https://tools.ietf.org/html/rfc7231#section-4.3.1">RFC 7231, section 4.3.1</a>
@@ -181,11 +186,6 @@ public final class HttpMethod
 			return method;
 		}
 	}
-
-	/**
-	 * A map to store all known HTTP methods. It's used by {@link #get(String)} to return an appropriate {@link HttpMethod} instance.
-	 */
-	private final static Map<String, HttpMethod> REGISTERED_METHODS = new HashMap<String, HttpMethod>(20);
 
 	/**
 	 * The HTTP verb of this method.
