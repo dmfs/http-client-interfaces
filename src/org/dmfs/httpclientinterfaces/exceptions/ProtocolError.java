@@ -55,7 +55,7 @@ public class ProtocolError extends Exception
 	 * @param message
 	 *            An error message.
 	 * @param cause
-	 *            The reaons for this error.
+	 *            The reason for this error.
 	 */
 	public ProtocolError(String message, Throwable cause)
 	{

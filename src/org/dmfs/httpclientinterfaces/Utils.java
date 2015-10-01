@@ -37,14 +37,14 @@ public final class Utils
 
 
 	/**
-	 * Consumes the given {@link IHttpResponseEntity} without throwing an {@link IOException}.
+	 * Consumes the given {@link HttpResponseEntity} without throwing an {@link IOException}.
 	 * 
 	 * @param entity
-	 *            The {@link IHttpResponseEntity} to consume.
+	 *            The {@link HttpResponseEntity} to consume.
 	 * 
-	 * @see #consumeEntity(IHttpResponseEntity)
+	 * @see #consumeEntity(HttpResponseEntity)
 	 */
-	public static void consumeEntitySilently(IHttpResponseEntity entity)
+	public static void consumeEntitySilently(HttpResponseEntity entity)
 	{
 		try
 		{
@@ -58,13 +58,13 @@ public final class Utils
 
 
 	/**
-	 * Consumes the given {@link IHttpResponseEntity}. In essence that means the input stream is closed properly.
+	 * Consumes the given {@link HttpResponseEntity}. In essence that means the input stream is closed properly.
 	 * 
 	 * @param entity
-	 *            The {@link IHttpResponseEntity} to consume.
+	 *            The {@link HttpResponseEntity} to consume.
 	 * @throws IOException
 	 */
-	public static void consumeEntity(IHttpResponseEntity entity) throws IOException
+	public static void consumeEntity(HttpResponseEntity entity) throws IOException
 	{
 		if (entity == null)
 		{
@@ -72,7 +72,7 @@ public final class Utils
 			return;
 		}
 
-		InputStream in = entity.getContentStream();
+		InputStream in = entity.contentStream();
 		if (in == null)
 		{
 			// nothing to do
@@ -84,7 +84,7 @@ public final class Utils
 
 
 	/**
-	 * Verifies if the {@link ContentType} of the given {@link IHttpResponseEntity} matches one of the given valid content-types.
+	 * Verifies if the {@link ContentType} of the given {@link HttpResponseEntity} matches one of the given valid content-types.
 	 * 
 	 * @param entity
 	 *            The entity to verify.
@@ -92,7 +92,7 @@ public final class Utils
 	 *            The allowed content-types.
 	 * @return <code>true</code> if the entity has one of the given content-types, <code>false</code> otherwise.
 	 */
-	public static boolean verifyContentType(IHttpResponseEntity entity, ContentType... validContentTypes)
+	public static boolean verifyContentType(HttpResponseEntity entity, ContentType... validContentTypes)
 	{
 		if (entity == null)
 		{
@@ -104,7 +104,7 @@ public final class Utils
 			throw new IllegalArgumentException("no content types given");
 		}
 
-		ContentType contentType = entity.getContentType();
+		ContentType contentType = entity.contentType();
 		if (contentType == null)
 		{
 			// the content type is null, which never matches

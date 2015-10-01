@@ -27,14 +27,17 @@ import org.dmfs.httpclientinterfaces.exceptions.UnhandledStatusError;
 
 
 /**
- * The interface of an instances that knows how to execute an {@link IHttpRequest}.
+ * The interface of an instances that knows how to execute an {@link HttpRequest}.
+ * <p />
+ * It's worth noting, that the request {@link URI} is never determined by the request. All execute methods take a dedicated {@link URI} parameter. It's easy to
+ * extend {@link HttpRequest} and write a wrapper around {@link HttpRequestExecutor} to let the request return the URI. However, that's left to the implementer.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface IHttpRequestExecutor
+public interface HttpRequestExecutor
 {
 	/**
-	 * Sends the given {@link IHttpRequest} to the given {@link URI} and returns the result. This method uses the default redirection handling policy as
+	 * Sends the given {@link HttpRequest} to the given {@link URI} and returns the result. This method uses the default redirection handling policy as
 	 * configured in the executer instance.
 	 * 
 	 * @param uri
@@ -43,27 +46,27 @@ public interface IHttpRequestExecutor
 	 *            The request to execute.
 	 * @return The result, i.e. the handled server response.
 	 */
-	public <T> T execute(URI uri, IHttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnhandledStatusError;
+	public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnhandledStatusError;
 
 
 	/**
-	 * Sends the given {@link IHttpRequest} to the given {@link URI} and returns the result. This method uses a custom {@link IRedirectionCallback} to handle
-	 * any redirections.
+	 * Sends the given {@link HttpRequest} to the given {@link URI} and returns the result. This method uses a custom {@link OnRedirectCallback} to handle any
+	 * redirections.
 	 * 
 	 * @param uri
 	 *            The URI to send this request to.
 	 * @param request
 	 *            The request to execute.
 	 * @param redirectionCallback
-	 *            An {@link IRedirectionCallback} that determines how to handle any redirections.
+	 *            An {@link OnRedirectCallback} that determines how to handle any redirections.
 	 * @return The result, i.e. the handled server response.
 	 */
-	public <T> T execute(URI uri, IHttpRequest<T> request, IRedirectionCallback redirectionCallback) throws IOException, ProtocolError, ProtocolException,
+	public <T> T execute(URI uri, HttpRequest<T> request, OnRedirectCallback redirectionCallback) throws IOException, ProtocolError, ProtocolException,
 		RedirectionException, UnhandledStatusError;
 
 
 	/**
-	 * Sends the given {@link IHttpRequest} to the given {@link URI} and calls an {@link IResponseCallback} with the result. This method uses the default
+	 * Sends the given {@link HttpRequest} to the given {@link URI} and calls an {@link OnResponseCallback} with the result. This method uses the default
 	 * redirection handling policy as configured in the executer instance. This method may be executed asynchronously, so the caller must be aware that the
 	 * result may not be available yet, when the method returns.
 	 * 
@@ -72,14 +75,14 @@ public interface IHttpRequestExecutor
 	 * @param request
 	 *            The request to execute.
 	 * @param callback
-	 *            An {@link IResponseCallback} to call with the result of the request.
+	 *            An {@link OnResponseCallback} to call with the result of the request.
 	 */
-	public <T> void execute(URI uri, IHttpRequest<T> request, IResponseCallback<T> callback);
+	public <T> void execute(URI uri, HttpRequest<T> request, OnResponseCallback<T> callback);
 
 
 	/**
-	 * Sends the given {@link IHttpRequest} to the given {@link URI} and calls an {@link IResponseCallback} with the result. This method uses a custom
-	 * {@link IRedirectionCallback} to handle any redirections. This method may be executed asynchronously, so the caller must be aware that the result may not
+	 * Sends the given {@link HttpRequest} to the given {@link URI} and calls an {@link OnResponseCallback} with the result. This method uses a custom
+	 * {@link OnRedirectCallback} to handle any redirections. This method may be executed asynchronously, so the caller must be aware that the result may not
 	 * be available yet, when the method returns.
 	 * 
 	 * @param uri
@@ -87,9 +90,9 @@ public interface IHttpRequestExecutor
 	 * @param request
 	 *            The request to execute.
 	 * @param callback
-	 *            An {@link IResponseCallback} to call with the result of the request.
+	 *            An {@link OnResponseCallback} to call with the result of the request.
 	 * @param redirectionCallback
-	 *            An {@link IRedirectionCallback} that determines how to handle any redirections.
+	 *            An {@link OnRedirectCallback} that determines how to handle any redirections.
 	 */
-	public <T> void execute(URI uri, IHttpRequest<T> request, IResponseCallback<T> callback, IRedirectionCallback redirectionCallback);
+	public <T> void execute(URI uri, HttpRequest<T> request, OnResponseCallback<T> callback, OnRedirectCallback redirectionCallback);
 }

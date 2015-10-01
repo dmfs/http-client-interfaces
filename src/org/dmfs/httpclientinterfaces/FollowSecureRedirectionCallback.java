@@ -21,12 +21,12 @@ import java.net.URI;
 
 
 /**
- * An {@link IRedirectionCallback} that follows only secure redirects. A redirect is considered to be secure if origin and target are secure. To get an instance
+ * An {@link OnRedirectCallback} that follows only secure redirects. A redirect is considered to be secure if origin and target are secure. To get an instance
  * use {@link #getInstance()}.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class FollowSecureRedirectionCallback implements IRedirectionCallback
+public final class FollowSecureRedirectionCallback implements OnRedirectCallback
 {
 	private final static class SingletonHolder
 	{
@@ -51,8 +51,16 @@ public class FollowSecureRedirectionCallback implements IRedirectionCallback
 	}
 
 
+	/**
+	 * Don't Instantiate this, use {@link #getInstance()}. Instead.
+	 */
+	private FollowSecureRedirectionCallback()
+	{
+	}
+
+
 	@Override
-	public boolean onRedirect(int statusCode, URI redirectingLocation, URI newLocation)
+	public boolean onRedirect(HttpStatus status, URI redirectingLocation, URI newLocation)
 	{
 		return SECURE_SCHEME.equalsIgnoreCase(newLocation.getScheme()) && SECURE_SCHEME.equalsIgnoreCase(redirectingLocation.getScheme());
 	}

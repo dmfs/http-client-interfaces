@@ -19,11 +19,12 @@ package org.dmfs.httpclientinterfaces.exceptions;
 
 import java.net.URI;
 
-import org.dmfs.httpclientinterfaces.IRedirectionCallback;
+import org.dmfs.httpclientinterfaces.HttpStatus;
+import org.dmfs.httpclientinterfaces.OnRedirectCallback;
 
 
 /**
- * An {@link Exception} that's thrown when the server returns a redirect and the {@link IRedirectionCallback} returned <code>false</code> for this redirect.
+ * An {@link Exception} that's thrown when the server returns a redirect and the {@link OnRedirectCallback} returned <code>false</code> for this redirect.
  * <p>
  * There are two subclasses for specific error conditions: {@link TooManyRedirectsException} and {@link RedirectionLoopException}.
  * </p>
@@ -42,7 +43,7 @@ public class RedirectionException extends UnhandledStatusError
 	private final URI mNewLocation;
 
 
-	public RedirectionException(int status, URI redirectingLocation, URI newLocation)
+	public RedirectionException(HttpStatus status, URI redirectingLocation, URI newLocation)
 	{
 		super(status);
 		mRedirectingLocation = redirectingLocation;
@@ -50,7 +51,7 @@ public class RedirectionException extends UnhandledStatusError
 	}
 
 
-	public RedirectionException(int status, String message, URI redirectingLocation, URI newLocation)
+	public RedirectionException(HttpStatus status, String message, URI redirectingLocation, URI newLocation)
 	{
 		super(status, message);
 		mRedirectingLocation = redirectingLocation;

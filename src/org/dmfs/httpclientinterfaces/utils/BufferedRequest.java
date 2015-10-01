@@ -19,12 +19,12 @@ package org.dmfs.httpclientinterfaces.utils;
 
 import java.io.IOException;
 
+import org.dmfs.httpclientinterfaces.HeaderEditor;
 import org.dmfs.httpclientinterfaces.HttpMethod;
-import org.dmfs.httpclientinterfaces.IHeaderEditor;
-import org.dmfs.httpclientinterfaces.IHttpRequest;
-import org.dmfs.httpclientinterfaces.IHttpRequestEntity;
-import org.dmfs.httpclientinterfaces.IHttpResponse;
-import org.dmfs.httpclientinterfaces.IResponseHandler;
+import org.dmfs.httpclientinterfaces.HttpRequest;
+import org.dmfs.httpclientinterfaces.HttpRequestEntity;
+import org.dmfs.httpclientinterfaces.HttpResponse;
+import org.dmfs.httpclientinterfaces.ResponseHandler;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolError;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
 
@@ -38,12 +38,12 @@ import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
  * @param <T>
  *            The generic type of the wrapped request.
  */
-public class BufferedRequest<T> implements IHttpRequest<T>
+public final class BufferedRequest<T> implements HttpRequest<T>
 {
 	/**
 	 * The wrapped request.
 	 */
-	private IHttpRequest<T> mRequest;
+	private HttpRequest<T> mRequest;
 
 	/**
 	 * The buffered request entity.
@@ -57,7 +57,7 @@ public class BufferedRequest<T> implements IHttpRequest<T>
 	 * @param request
 	 *            The request to buffer.
 	 */
-	public BufferedRequest(IHttpRequest<T> request)
+	public BufferedRequest(HttpRequest<T> request)
 	{
 		this(request, Integer.MAX_VALUE);
 	}
@@ -71,37 +71,37 @@ public class BufferedRequest<T> implements IHttpRequest<T>
 	 * @param maxBufferSize
 	 *            The maximum buffer size.
 	 */
-	public BufferedRequest(IHttpRequest<T> request, int maxBufferSize)
+	public BufferedRequest(HttpRequest<T> request, int maxBufferSize)
 	{
 		mRequest = request;
-		mEntity = new BufferedRequestEntity(mRequest.getRequestEntity(), maxBufferSize);
+		mEntity = new BufferedRequestEntity(mRequest.requestEntity(), maxBufferSize);
 	}
 
 
 	@Override
-	public HttpMethod getMethod()
+	public HttpMethod method()
 	{
-		return mRequest.getMethod();
+		return mRequest.method();
 	}
 
 
 	@Override
-	public void updateHeaders(IHeaderEditor headerEditor)
+	public void updateHeaders(HeaderEditor headerEditor)
 	{
 		mRequest.updateHeaders(headerEditor);
 	}
 
 
 	@Override
-	public IHttpRequestEntity getRequestEntity()
+	public HttpRequestEntity requestEntity()
 	{
 		return mEntity;
 	}
 
 
 	@Override
-	public IResponseHandler<T> getResponseHandler(IHttpResponse response) throws IOException, ProtocolError, ProtocolException
+	public ResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
 	{
-		return mRequest.getResponseHandler(response);
+		return mRequest.responseHandler(response);
 	}
 }

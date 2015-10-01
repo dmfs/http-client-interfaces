@@ -90,6 +90,13 @@ public final class HttpMethod
 	 */
 	public final static HttpMethod TRACE = safeMethod("TRACE");
 
+	/**
+	 * HTTP Method PATCH
+	 * 
+	 * @see <a href="http://tools.ietf.org/html/rfc5789">RFC 5789</a>
+	 */
+	public final static HttpMethod PATCH = method("PATCH");
+
 
 	/**
 	 * Returns a known method for the given verb.

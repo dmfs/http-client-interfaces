@@ -27,20 +27,20 @@ import org.dmfs.httpclientinterfaces.exceptions.RedirectionException;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface IRedirectionCallback
+public interface OnRedirectCallback
 {
 	/**
 	 * This is called when a server has sent some sort of redirect. This method determines whether to follow the redirect or not. In the later case a
-	 * {@link RedirectionException} is thrown by the {@link IHttpRequestExecutor}.
+	 * {@link RedirectionException} is thrown by the {@link HttpRequestExecutor}.
 	 * 
-	 * @param statusCode
-	 *            One of {@link HttpStatus#MOVED_PERMANENTLY}, {@link HttpStatus#FOUND}, {@link HttpStatus#SEE_OTHER}, {@link HttpStatus#TEMPORARY_REDIRECT} and
+	 * @param status
+	 *            One of {@link HttpStatus#MOVED_PERMANENTLY}, {@link HttpStatus#FOUND}, {@link HttpStatus#SEE_OTHER}, {@link HttpStatus#TEMPORARY_REDIRECT} or
 	 *            {@link HttpStatus#PERMANENT_REDIRECT}.
 	 * @param redirectingLocation
 	 *            The absolute {@link URI} of the resource that returned the redirect.
 	 * @param newLocation
 	 *            The absolute {@link URI} that was returned by the server as the new location.
-	 * @return <code>true</code> to follow that redirect and resend the request to the new location, <code>false</code> to not follow it.
+	 * @return <code>true</code> to follow that redirect and resent the request to the new location, <code>false</code> to not follow it.
 	 */
-	public boolean onRedirect(int statusCode, URI redirectingLocation, URI newLocation);
+	public boolean onRedirect(HttpStatus status, URI redirectingLocation, URI newLocation);
 }

@@ -31,10 +31,10 @@ import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
  * @param <T>
  *            The type of the response object returned.
  */
-public interface IResponseHandler<T>
+public interface ResponseHandler<T>
 {
 	/**
-	 * Actually handles the {@link IHttpResponse}.
+	 * Actually handles the {@link HttpResponse}.
 	 * 
 	 * @param response
 	 *            The response object.
@@ -43,5 +43,5 @@ public interface IResponseHandler<T>
 	 * @throws ProtocolError
 	 * @throws ProtocolException
 	 */
-	public T handleResponse(IHttpResponse response) throws IOException, ProtocolError, ProtocolException;
+	public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
 }

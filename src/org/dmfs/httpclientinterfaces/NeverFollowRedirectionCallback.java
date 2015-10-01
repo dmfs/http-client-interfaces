@@ -21,11 +21,11 @@ import java.net.URI;
 
 
 /**
- * A simple {@link IRedirectionCallback} implementation that doesn't follow any redirects. To get an instance use {@link #getInstance()}.
+ * A simple {@link OnRedirectCallback} implementation that doesn't follow any redirects. To get an instance use {@link #getInstance()}.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class NeverFollowRedirectionCallback implements IRedirectionCallback
+public final class NeverFollowRedirectionCallback implements OnRedirectCallback
 {
 	private final static class SingletonHolder
 	{
@@ -48,8 +48,16 @@ public class NeverFollowRedirectionCallback implements IRedirectionCallback
 	}
 
 
+	/**
+	 * Don't Instantiate this, use {@link #getInstance()}. Instead.
+	 */
+	private NeverFollowRedirectionCallback()
+	{
+	}
+
+
 	@Override
-	public boolean onRedirect(int statusCode, URI redirectingLocation, URI newLocation)
+	public boolean onRedirect(HttpStatus status, URI redirectingLocation, URI newLocation)
 	{
 		return false;
 	}

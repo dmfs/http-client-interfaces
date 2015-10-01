@@ -41,7 +41,7 @@ public class UnauthorizedError extends ClientError
 	 */
 	public UnauthorizedError()
 	{
-		super(HttpStatus.NOT_FOUND);
+		super(HttpStatus.UNAUTHORIZED);
 	}
 
 
@@ -53,6 +53,6 @@ public class UnauthorizedError extends ClientError
 	 */
 	public UnauthorizedError(String message)
 	{
-		super(HttpStatus.NOT_FOUND, message);
+		super(HttpStatus.UNAUTHORIZED, message);
 	}
 }

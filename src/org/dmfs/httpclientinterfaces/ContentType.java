@@ -121,6 +121,14 @@ public class ContentType
 	}
 
 
+	/**
+	 * Creates a new {@link ContentType} object from the given string representation, while adding or overriding {@link Parameter}s.
+	 * 
+	 * @param contentType
+	 *            A string representation of a content-type.
+	 * @param params
+	 *            {@link Parameter}s to add or override.
+	 */
 	public ContentType(String contentType, Parameter... params)
 	{
 		this(contentType);
@@ -140,6 +148,14 @@ public class ContentType
 	}
 
 
+	/**
+	 * Clone constructor that adds/overrides {@link Parameter}s.
+	 * 
+	 * @param contentType
+	 *            The original content type.
+	 * @param params
+	 *            The {@link Parameter}s to add or override.
+	 */
 	public ContentType(ContentType contentType, Parameter... params)
 	{
 		type = contentType.type;
@@ -170,7 +186,7 @@ public class ContentType
 	 *            The key of the parameter.
 	 * @return The value {@link String}.
 	 */
-	public Parameter getParam(String key)
+	public Parameter param(String key)
 	{
 		if (mParams == null)
 		{
@@ -190,7 +206,7 @@ public class ContentType
 	 */
 	public String getCharset()
 	{
-		Parameter charsetParam = getParam(PARAM_CHARSET);
+		Parameter charsetParam = param(PARAM_CHARSET);
 		return charsetParam == null ? null : charsetParam.value;
 	}
 
@@ -202,7 +218,7 @@ public class ContentType
 	 */
 	public String getCharset(String defaultCharset)
 	{
-		Parameter charsetParam = getParam(PARAM_CHARSET);
+		Parameter charsetParam = param(PARAM_CHARSET);
 		return charsetParam == null || charsetParam.value.length() == 0 ? defaultCharset : charsetParam.value;
 	}
 

@@ -64,7 +64,7 @@ public class ProtocolException extends Exception
 	 * @param message
 	 *            An error message.
 	 * @param cause
-	 *            The reaons for this error.
+	 *            The reason for this error.
 	 */
 	public ProtocolException(String message, Throwable cause)
 	{

@@ -21,16 +21,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.dmfs.httpclientinterfaces.ContentType;
-import org.dmfs.httpclientinterfaces.IHttpRequestEntity;
+import org.dmfs.httpclientinterfaces.HttpRequestEntity;
 
 
 /**
- * A buffered request entity wrapper. It buffers the content of another {@link IHttpRequestEntity}, if necessary, to determine the content length before sending
+ * A buffered request entity wrapper. It buffers the content of another {@link HttpRequestEntity}, if necessary, to determine the content length before sending
  * it to the client. Implementations can use this to avoid chunked encoding if the server doesn't support it.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class BufferedRequestEntity implements IHttpRequestEntity
+public class BufferedRequestEntity implements HttpRequestEntity
 {
 	/**
 	 * The chunk size of our buffer. 16kB should hold most of the smaller requests.
@@ -40,7 +40,7 @@ public class BufferedRequestEntity implements IHttpRequestEntity
 	/**
 	 * The buffered entity.
 	 */
-	private IHttpRequestEntity mBufferedEntity;
+	private HttpRequestEntity mBufferedEntity;
 
 	/**
 	 * The buffer.
@@ -53,13 +53,13 @@ public class BufferedRequestEntity implements IHttpRequestEntity
 	private int mMaxBufferSize;
 
 
-	public BufferedRequestEntity(IHttpRequestEntity bufferedEntity)
+	public BufferedRequestEntity(HttpRequestEntity bufferedEntity)
 	{
 		this(bufferedEntity, Integer.MAX_VALUE);
 	}
 
 
-	public BufferedRequestEntity(IHttpRequestEntity bufferedEntity, int maxBufferSize)
+	public BufferedRequestEntity(HttpRequestEntity bufferedEntity, int maxBufferSize)
 	{
 		mBufferedEntity = bufferedEntity;
 		mMaxBufferSize = maxBufferSize;
@@ -67,16 +67,16 @@ public class BufferedRequestEntity implements IHttpRequestEntity
 
 
 	@Override
-	public ContentType getContentType()
+	public ContentType contentType()
 	{
-		return mBufferedEntity.getContentType();
+		return mBufferedEntity.contentType();
 	}
 
 
 	@Override
-	public long getContentLength() throws IOException
+	public long contentLength() throws IOException
 	{
-		long len = mBufferedEntity.getContentLength();
+		long len = mBufferedEntity.contentLength();
 		if (len >= 0)
 		{
 			// no need to buffer

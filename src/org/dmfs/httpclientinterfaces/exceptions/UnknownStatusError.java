@@ -17,46 +17,58 @@
 
 package org.dmfs.httpclientinterfaces.exceptions;
 
-import org.dmfs.httpclientinterfaces.HttpStatus;
-
-
 /**
- * This is a special {@link UnhandledStatusError} for <code>4xx</code> status codes (i.e. client errors).
+ * An exception that's thrown when an unknown status code has been parsed.
  * 
  * @author Marten Gajda <marten@dmfs.org>
- * 
- * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.5">RFC 7231, section 6.5</a>
  */
-public class ClientError extends UnhandledStatusError
+public final class UnknownStatusError extends IllegalArgumentException
 {
 	/**
 	 * Generated serial UID.
 	 */
-	private static final long serialVersionUID = 3375512006017392390L;
+	private static final long serialVersionUID = -6837115661126045047L;
+
+	/**
+	 * The status that was returned by the server.
+	 */
+	private final int mStatus;
 
 
 	/**
-	 * Create a new {@link ClientError}.
+	 * Create a new {@link UnknownStatusError}.
 	 * 
 	 * @param status
 	 *            The status returned by the server.
 	 */
-	public ClientError(HttpStatus status)
+	public UnknownStatusError(int status)
 	{
-		super(status);
+		this(status, null);
 	}
 
 
 	/**
-	 * Create a new {@link ClientError} with a message.
+	 * Create a new {@link UnknownStatusError} with a message.
 	 * 
 	 * @param status
 	 *            The status returned by the server.
 	 * @param message
 	 *            An error message.
 	 */
-	public ClientError(HttpStatus status, String message)
+	public UnknownStatusError(int status, String message)
 	{
-		super(status, message);
+		super(message);
+		mStatus = status;
+	}
+
+
+	/**
+	 * Returns the unknown status code as returned by the server.
+	 * 
+	 * @return The status code.
+	 */
+	public int getStatus()
+	{
+		return mStatus;
 	}
 }

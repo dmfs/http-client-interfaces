@@ -18,15 +18,15 @@
 package org.dmfs.httpclientinterfaces;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
- * Defines an interface of an HTTP response message body entity.
+ * Defines an interface of an HTTP message request body entity.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface IHttpResponseEntity
+public interface HttpRequestEntity
 {
 
 	/**
@@ -34,7 +34,7 @@ public interface IHttpResponseEntity
 	 * 
 	 * @return The content type or <code>null</code> if it's not known.
 	 */
-	public ContentType getContentType();
+	public ContentType contentType();
 
 
 	/**
@@ -43,13 +43,15 @@ public interface IHttpResponseEntity
 	 * @return The content length or a negative number.
 	 * @throws IOException
 	 */
-	public long getContentLength() throws IOException;
+	public long contentLength() throws IOException;
 
 
 	/**
-	 * Returns the content {@link InputStream} of the entity.
+	 * Writes the content to the given {@link OutputStream}. Note that the stream is property of the caller and must not be closed by this method.
 	 * 
+	 * @param out
+	 *            The {@link OutputStream} to write to.
 	 * @throws IOException
 	 */
-	public InputStream getContentStream() throws IOException;
+	public void writeContent(OutputStream out) throws IOException;
 }

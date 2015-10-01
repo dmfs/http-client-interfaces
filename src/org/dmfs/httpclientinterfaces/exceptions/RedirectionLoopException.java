@@ -19,6 +19,8 @@ package org.dmfs.httpclientinterfaces.exceptions;
 
 import java.net.URI;
 
+import org.dmfs.httpclientinterfaces.HttpStatus;
+
 
 /**
  * An {@link Exception} that's thrown when a redirection loop has been detected.
@@ -34,16 +36,16 @@ public class RedirectionLoopException extends RedirectionException
 
 
 	/**
-	 * Create a new redirection loop exception. for the given status code, source and destination.
+	 * Create a new redirection loop exception. for the given status, source and destination.
 	 * 
 	 * @param statusCode
-	 *            The status code of the redirect.
+	 *            The status of the redirect.
 	 * @param redirectingLocation
 	 *            The source of the redirect.
 	 * @param newLocation
 	 *            The destination of the redirect.
 	 */
-	public RedirectionLoopException(int statusCode, URI redirectingLocation, URI newLocation)
+	public RedirectionLoopException(HttpStatus statusCode, URI redirectingLocation, URI newLocation)
 	{
 		super(statusCode, redirectingLocation, newLocation);
 	}

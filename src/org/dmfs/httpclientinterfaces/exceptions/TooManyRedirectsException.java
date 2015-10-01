@@ -19,6 +19,8 @@ package org.dmfs.httpclientinterfaces.exceptions;
 
 import java.net.URI;
 
+import org.dmfs.httpclientinterfaces.HttpStatus;
+
 
 /**
  * An {@link Exception} that's thrown when the client has been redirected too often.
@@ -36,10 +38,10 @@ public class TooManyRedirectsException extends RedirectionException
 
 
 	/**
-	 * Create a new {@link TooManyRedirectsException} for the given status code, source and destination.
+	 * Create a new {@link TooManyRedirectsException} for the given status, source and destination.
 	 * 
 	 * @param statusCode
-	 *            The status code of the redirect.
+	 *            The status of the redirect.
 	 * @param count
 	 *            The number of redirects to this point.
 	 * @param redirectingLocation
@@ -47,7 +49,7 @@ public class TooManyRedirectsException extends RedirectionException
 	 * @param newLocation
 	 *            The destination of the redirect.
 	 */
-	public TooManyRedirectsException(int statusCode, int count, URI redirectingLocation, URI newLocation)
+	public TooManyRedirectsException(HttpStatus statusCode, int count, URI redirectingLocation, URI newLocation)
 	{
 		super(statusCode, redirectingLocation, newLocation);
 		mCount = count;

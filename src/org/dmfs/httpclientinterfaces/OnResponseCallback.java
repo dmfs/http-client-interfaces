@@ -18,14 +18,14 @@
 package org.dmfs.httpclientinterfaces;
 
 /**
- * Callback for asynchronous response handling. This will be called by {@link IHttpRequestExecutor#execute(java.net.URI, IHttpRequest, IResponseCallback)} or
- * {@link IHttpRequestExecutor#execute(java.net.URI, IHttpRequest, IResponseCallback, IRedirectionCallback)} when the response has been handled or an error
+ * Callback for asynchronous response handling. This will be called by {@link HttpRequestExecutor#execute(java.net.URI, IHttpRequest, IResponseCallback)} or
+ * {@link HttpRequestExecutor#execute(java.net.URI, IHttpRequest, IResponseCallback, IRedirectionCallback)} when the response has been handled or an error
  * occurred.
  * <p>
  * Note that exactly one of {@link #onResponse(Object)} and {@link #onError(Exception)} gets called per request, never both.
  * </p>
  * <p>
- * Also note that this may be called in a background thread, depending on the actual implementation of the {@link IHttpRequestExecutor}.
+ * Also note that this may be called in a background thread, depending on the actual implementation of the {@link HttpRequestExecutor}.
  * </p>
  * 
  * @author Marten Gajda <marten@dmfs.org>
@@ -33,15 +33,15 @@ package org.dmfs.httpclientinterfaces;
  * @param <T>
  *            The type of the expected response value.
  */
-public interface IResponseCallback<T>
+public interface OnResponseCallback<T>
 {
 
 	/**
 	 * Called when the response object has been parsed and handled successfully. The parameter passed to this method is the result of
-	 * {@link IResponseHandler#handleResponse(IHttpResponse)}.
+	 * {@link ResponseHandler#handleResponse(IHttpResponse)}.
 	 * 
 	 * @param response
-	 *            The response object as returned by {@link IResponseHandler#handleResponse(IHttpResponse)}.
+	 *            The response object as returned by {@link ResponseHandler#handleResponse(IHttpResponse)}.
 	 */
 	public void onResponse(T response);
 

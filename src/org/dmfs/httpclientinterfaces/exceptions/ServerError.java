@@ -17,6 +17,9 @@
 
 package org.dmfs.httpclientinterfaces.exceptions;
 
+import org.dmfs.httpclientinterfaces.HttpStatus;
+
+
 /**
  * This is a special {@link UnhandledStatusError} for <code>5xx</code> status codes (i.e. server errors).
  * 
@@ -36,9 +39,9 @@ public class ServerError extends UnhandledStatusError
 	 * Create a new {@link ServerError}.
 	 * 
 	 * @param status
-	 *            The status code returned by the server.
+	 *            The status returned by the server.
 	 */
-	public ServerError(int status)
+	public ServerError(HttpStatus status)
 	{
 		super(status);
 	}
@@ -48,11 +51,11 @@ public class ServerError extends UnhandledStatusError
 	 * Create a new {@link ServerError} with a message.
 	 * 
 	 * @param status
-	 *            The status code returned by the server.
+	 *            The status returned by the server.
 	 * @param message
 	 *            An error message.
 	 */
-	public ServerError(int status, String message)
+	public ServerError(HttpStatus status, String message)
 	{
 		super(status, message);
 	}

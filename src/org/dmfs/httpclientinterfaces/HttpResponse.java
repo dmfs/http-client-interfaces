@@ -23,17 +23,20 @@ import java.net.URI;
 /**
  * An interface of an HTTP response object.
  * 
+ * <p />
+ * Find a better way to handle/return/iterate headers.
+ * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface IHttpResponse
+public interface HttpResponse
 {
 	/**
-	 * Returns the status code of the response.
+	 * Returns the status of the response.
 	 * 
 	 * @see HttpStatus
-	 * @return The status code.
+	 * @return The status.
 	 */
-	public int getStatusCode();
+	public HttpStatus status();
 
 
 	/**
@@ -43,7 +46,7 @@ public interface IHttpResponse
 	 *            The name of the header.
 	 * @return The number of occurrences of the given header.
 	 */
-	public int getHeaderCount(String header);
+	public int headerCount(String header);
 
 
 	/**
@@ -53,11 +56,11 @@ public interface IHttpResponse
 	 *            The name of the header.
 	 * @return The value of the header or <code>null</code> if no header with that name exists.
 	 */
-	public String getHeader(String header);
+	public String header(String header);
 
 
 	/**
-	 * Returns a header identifed by its name and position, i.e. it returns the n-th header of that name.
+	 * Returns a header identified by its name and position, i.e. it returns the n-th header of that name.
 	 * 
 	 * @param header
 	 *            The name of the header.
@@ -68,22 +71,34 @@ public interface IHttpResponse
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             if n < 0 or n >= {@link #getHeaderCount(String)} for the same header.
 	 */
-	public String getHeader(String header, int n);
+	public String header(String header, int n);
 
 
 	/**
-	 * Returns an {@link IHttpResponseEntity} representing the data in the response. This is guaranteed to be non-<code>null</code>.
+	 * Returns an {@link HttpResponseEntity} representing the data in the response. This is guaranteed to be non-<code>null</code>.
 	 * 
-	 * @return An {@link IHttpResponseEntity}.
+	 * @return An {@link HttpResponseEntity}.
 	 */
-	public IHttpResponseEntity getContentEntity();
+	public HttpResponseEntity responseEntity();
 
 
 	/**
-	 * Returns the {@link URI} of the server that handled the instance. If no redirects have been followed this equals the URI passed to the excecute methods of
-	 * {@link IHttpRequestExecutor} otherwise it's the URI of the last location that didn't return a redirect.
+	 * Returns the {@link URI} the request was originally sent to.
+	 * 
+	 * @return The URI of the request.
+	 * 
+	 * @see #responseUri()
+	 */
+	public URI requestUri();
+
+
+	/**
+	 * Returns the {@link URI} of the server that handled the instance. If no redirects have been followed this equals the URI passed to the execute methods of
+	 * {@link HttpRequestExecutor} otherwise it's the URI of the last location that didn't return a redirect.
 	 * 
 	 * @return The URI of the responding instance.
+	 * 
+	 * @see #requestUri()
 	 */
-	public URI getUri();
+	public URI responseUri();
 }

@@ -22,7 +22,7 @@ package org.dmfs.httpclientinterfaces;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface IHeaderEditor
+public interface HeaderEditor
 {
 	/**
 	 * Set a request header, overriding any other headers of the same name. Setting a <code>null</code> value will remove that header and has the same effect as

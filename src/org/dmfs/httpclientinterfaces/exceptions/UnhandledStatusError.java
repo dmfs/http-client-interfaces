@@ -18,11 +18,11 @@
 package org.dmfs.httpclientinterfaces.exceptions;
 
 import org.dmfs.httpclientinterfaces.HttpStatus;
-import org.dmfs.httpclientinterfaces.IResponseHandler;
+import org.dmfs.httpclientinterfaces.ResponseHandler;
 
 
 /**
- * An exception that's thrown when a response was not handled by an {@link IResponseHandler}.
+ * An exception that's thrown when a response was not handled by an {@link ResponseHandler}.
  * <p>
  * There are three major subclasses: {@link RedirectionException} for <code>3xx</code> response status codes, {@link ClientError} for <code>4xx</code> response
  * status codes and {@link ServerError} for <code>5xx</code> response status codes, some of them having subclasses themselves. Implementations should always
@@ -41,18 +41,18 @@ public class UnhandledStatusError extends Exception
 	/**
 	 * The status that was returned by the server.
 	 */
-	private final int mStatus;
+	private final HttpStatus mStatus;
 
 
 	/**
 	 * Create a new {@link UnhandledStatusError}.
 	 * 
 	 * @param status
-	 *            The status code returned by the server.
+	 *            The status returned by the server.
 	 */
-	public UnhandledStatusError(int status)
+	public UnhandledStatusError(HttpStatus status)
 	{
-		mStatus = status;
+		this(status, null);
 	}
 
 
@@ -60,11 +60,11 @@ public class UnhandledStatusError extends Exception
 	 * Create a new {@link UnhandledStatusError} with a message.
 	 * 
 	 * @param status
-	 *            The status code returned by the server.
+	 *            The status returned by the server.
 	 * @param message
 	 *            An error message.
 	 */
-	public UnhandledStatusError(int status, String message)
+	public UnhandledStatusError(HttpStatus status, String message)
 	{
 		super(message);
 		mStatus = status;
@@ -76,7 +76,7 @@ public class UnhandledStatusError extends Exception
 	 * 
 	 * @return The status code.
 	 */
-	public int getStatus()
+	public HttpStatus getStatus()
 	{
 		return mStatus;
 	}
@@ -92,20 +92,15 @@ public class UnhandledStatusError extends Exception
 	 * @return An {@link UnhandledStatusError} or a subclass.
 	 * @throws UnhandledStatusError
 	 */
-	public final static UnhandledStatusError dispatch(int status, String message) throws UnhandledStatusError
+	public final static UnhandledStatusError dispatch(HttpStatus status, String message) throws UnhandledStatusError
 	{
-		if (status < 400)
+		if (status.isClientError())
 		{
-			throw new UnhandledStatusError(status, message);
-		}
-
-		if (status < 500)
-		{
-			if (status == HttpStatus.NOT_FOUND)
+			if (HttpStatus.NOT_FOUND.equals(status))
 			{
 				throw new NotFoundError(message);
 			}
-			else if (status == HttpStatus.UNAUTHORIZED)
+			else if (HttpStatus.UNAUTHORIZED.equals(status))
 			{
 				throw new UnauthorizedError(message);
 			}
@@ -113,7 +108,7 @@ public class UnhandledStatusError extends Exception
 			throw new ClientError(status, message);
 		}
 
-		if (status < 600)
+		if (status.isServerError())
 		{
 			throw new ServerError(status, message);
 		}
