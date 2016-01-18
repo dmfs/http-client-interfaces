@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,16 +21,19 @@ import java.io.IOException;
 
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolError;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
-import org.dmfs.httpclientinterfaces.exceptions.UnhandledStatusError;
+import org.dmfs.httpclientinterfaces.headers.Header;
+import org.dmfs.httpclientinterfaces.headers.HeaderList;
+import org.dmfs.httpclientinterfaces.headers.impl.EmptyHeaderList;
+import org.dmfs.httpclientinterfaces.requestutils.EmptyHttpRequestEntity;
 
 
 /**
- * Defines a simple interface of an HTTP request. The request is typed to the class of the expected response.
+ * Defines an interface of an HTTP request. The request is typed to the class of the expected response.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  * 
  * @param <T>
- *            The type of the response.
+ *            The type of the expected response.
  */
 public interface HttpRequest<T>
 {
@@ -44,35 +47,34 @@ public interface HttpRequest<T>
 
 
 	/**
-	 * Modifies the headers in the request. This method sets all the headers this request needs to be executed successfully.
+	 * Returns a {@link HeaderList} containing the {@link Header}s to send with the request. Requests that don't need to send any headers should return
+	 * {@link EmptyHeaderList#INSTANCE}.
 	 * 
-	 * @param headerEditor
-	 *            An {@link HeaderEditor} to modify the headers of the request.
+	 * @return A {@link HeaderList}, never <code>null</code>.
 	 */
-	public void updateHeaders(HeaderEditor headerEditor);
+	public HeaderList headers();
 
 
 	/**
-	 * Returns an {@link HttpRequestEntity} that contains the body of this request. The result may be <code>null</code> if this request doesn't have any body
-	 * (like in case of a {@link HttpMethod#GET} or an {@link HttpMethod#OPTIONS} request).
+	 * Returns an {@link HttpRequestEntity} that contains the body of this request. If the request doesn't have any message body (like in case of a
+	 * {@link HttpMethod#GET} or an {@link HttpMethods#OPTIONS} request) this method should return {@link EmptyHttpRequestEntity#INSTANCE}.
 	 * 
-	 * @return An {@link HttpRequestEntity} object or <code>null</code> if this request doesn't have any body.
+	 * @return An {@link HttpRequestEntity} object.
 	 */
 	public HttpRequestEntity requestEntity();
 
 
 	/**
-	 * Returns a handler for the response. The implementation can return <code>null</code> to indicate that it can not handle that response. In that case the
-	 * {@link HttpRequestExecutor} must handle the response by throwing an {@link UnhandledStatusError} or any subclass of it.
+	 * Returns a handler for the response. If the response can not be handled an exception is thrown.
 	 * 
 	 * @param response
 	 *            The {@link HttpResponse} that needs to be handled.
-	 * @return An {@link ResponseHandler} or <code>null</code> to not handle the response.
+	 * @return An {@link HttpResponseHandler}.
 	 * @throws IOException
 	 * @throws ProtocolError
 	 *             If the response is an error response as specified by the application protocol.
 	 * @throws ProtocolException
 	 *             If the response is invalid or malformed and can not be handled properly.
 	 */
-	public ResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
+	public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
 }

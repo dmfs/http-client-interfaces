@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,9 +30,9 @@ import org.dmfs.httpclientinterfaces.HttpStatus;
 public class TooManyRedirectsException extends RedirectionException
 {
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = 7077624085764794753L;
+	private static final long serialVersionUID = 0;
 
 	private final int mCount;
 
@@ -61,7 +61,7 @@ public class TooManyRedirectsException extends RedirectionException
 	 * 
 	 * @return The number of redirects.
 	 */
-	public int getCount()
+	public int count()
 	{
 		return mCount;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.dmfs.httpclientinterfaces.exceptions.UnhandledStatusError;
-import org.dmfs.httpclientinterfaces.exceptions.UnknownStatusError;
-
 
 /**
  * Represents an HTTP status. Instances are immutable. To receive an {@link HttpStatus} for a specific status code call {@link #fromStatusCode(int)}.
@@ -33,7 +30,7 @@ import org.dmfs.httpclientinterfaces.exceptions.UnknownStatusError;
 public final class HttpStatus
 {
 	/**
-	 * A map of codes to their respective reasons.
+	 * An index/cache of {@link HttpStatus}es by status code.
 	 */
 	private final static Map<Integer, HttpStatus> STATUS_CODES = Collections.synchronizedMap(new HashMap<Integer, HttpStatus>(50));
 
@@ -315,12 +312,12 @@ public final class HttpStatus
 	/**
 	 * The actual status code.
 	 */
-	public final int statusCode;
+	private final int statusCode;
 
 	/**
-	 * An HTTP/1.1 status line of this status code.
+	 * The reason phrase of this status.
 	 */
-	public final String http11StatusLine;
+	private final String reasonPhrase;
 
 
 	/**
@@ -331,10 +328,10 @@ public final class HttpStatus
 	 * @param reasonPhrase
 	 *            The reason phrase of this status.
 	 */
-	private HttpStatus(int statusCode, String reasonPhrase)
+	private HttpStatus(final int statusCode, final String reasonPhrase)
 	{
 		this.statusCode = statusCode;
-		this.http11StatusLine = http11StatusLine(statusCode, reasonPhrase);
+		this.reasonPhrase = reasonPhrase;
 		STATUS_CODES.put(statusCode, this);
 	}
 
@@ -350,11 +347,9 @@ public final class HttpStatus
 	 * @return The {@link HttpStatus} object.
 	 * 
 	 * @throws IllegalArgumentException
-	 *             if the given status line doesn't contain a known status code.
-	 * @throws UnhandledStatusError
-	 *             if the status code is unknown
+	 *             if the given status line doesn't contain a known status code or the status code is invalid.
 	 */
-	public static HttpStatus fromStatusLine(final String statusLine) throws IllegalArgumentException, UnknownStatusError
+	public static HttpStatus fromStatusLine(final String statusLine) throws IllegalArgumentException
 	{
 		/*
 		 * According to RFC 7230, a valid HTTP status line always looks like
@@ -377,12 +372,18 @@ public final class HttpStatus
 				{
 					final int status = Integer.parseInt(statusLine.substring(start, end));
 
-					// valid status codes are between 100 and 599
-					if (status >= 100 && status <= 599)
+					// valid status codes are between 100 and 999
+					if (status < 100 || status > 999)
+					{
+						throw new IllegalArgumentException("Illegal status code " + status);
+					}
+
+					if (STATUS_CODES.containsKey(status))
 					{
 						return fromStatusCode(status);
 					}
-					throw new UnknownStatusError(status, "Unknown status code");
+
+					return new HttpStatus(status, end < statusLine.length() ? statusLine.substring(end + 1) : "Unknown" /* this would be invalid actually */);
 				}
 				catch (NumberFormatException e)
 				{
@@ -400,17 +401,31 @@ public final class HttpStatus
 	 * @param statusCode
 	 *            An HTTP status code integer.
 	 * @return The {@link HttpStatus} having the given status code.
-	 * @throws UnhandledStatusError
-	 *             if the status code is unknown.
 	 */
-	public static HttpStatus fromStatusCode(int statusCode) throws UnknownStatusError
+	public static HttpStatus fromStatusCode(final int statusCode)
 	{
+		if (statusCode < 100 || statusCode > 999)
+		{
+			throw new IllegalArgumentException("Illegal status code " + statusCode);
+		}
+
 		HttpStatus result = STATUS_CODES.get(statusCode);
 		if (result == null)
 		{
-			throw new UnknownStatusError(statusCode, "Unknown status code");
+			return new HttpStatus(statusCode, "Unknown");
 		}
 		return result;
+	}
+
+
+	/**
+	 * Returns the status code.
+	 * 
+	 * @return
+	 */
+	public int statusCode()
+	{
+		return statusCode;
 	}
 
 
@@ -424,23 +439,26 @@ public final class HttpStatus
 	 */
 	public String reason()
 	{
-		return http11StatusLine.substring(13);
+		return reasonPhrase;
 	}
 
 
 	/**
-	 * Returns an HTTP/1.1 status line of this status code.
+	 * Returns a status line in the form:
 	 * 
-	 * @return The status line.
+	 * <pre>
+	 * HTTP/VersionMajor.VersionMinor SP Status-Code SP Reason-Phrase
+	 * </pre>
+	 * 
+	 * @param httpVersionMajor
+	 *            The major version number, usually <code>1</code>
+	 * @param httpVersionMinor
+	 *            The minor version number, usually <code>1</code>
+	 * @return
 	 */
-	private static String http11StatusLine(int code, String reason)
+	public String statusLine(int httpVersionMajor, int httpVersionMinor)
 	{
-		StringBuilder result = new StringBuilder(48);
-		result.append("HTTP/1.1 ");
-		result.append(code);
-		result.append(' ');
-		result.append(reason);
-		return result.toString();
+		return String.format("HTTP/%s.%s %d %s", httpVersionMajor, httpVersionMinor, statusCode, reasonPhrase);
 	}
 
 
@@ -507,9 +525,8 @@ public final class HttpStatus
 
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
-		// since the constructor is private, we can safely assume that there is only one instance for each status code
-		return this == obj;
+		return this == obj || (obj instanceof HttpStatus && ((HttpStatus) obj).statusCode() == statusCode);
 	}
 }

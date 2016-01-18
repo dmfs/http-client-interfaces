@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpclientinterfaces.utils;
+package org.dmfs.httpclientinterfaces.requestutils;
 
 import java.io.IOException;
 
-import org.dmfs.httpclientinterfaces.HeaderEditor;
 import org.dmfs.httpclientinterfaces.HttpMethod;
 import org.dmfs.httpclientinterfaces.HttpRequest;
 import org.dmfs.httpclientinterfaces.HttpRequestEntity;
 import org.dmfs.httpclientinterfaces.HttpResponse;
-import org.dmfs.httpclientinterfaces.ResponseHandler;
+import org.dmfs.httpclientinterfaces.HttpResponseHandler;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolError;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
+import org.dmfs.httpclientinterfaces.headers.HeaderList;
 
 
 /**
@@ -43,7 +43,7 @@ public final class BufferedRequest<T> implements HttpRequest<T>
 	/**
 	 * The wrapped request.
 	 */
-	private HttpRequest<T> mRequest;
+	private final HttpRequest<T> mRequest;
 
 	/**
 	 * The buffered request entity.
@@ -52,7 +52,7 @@ public final class BufferedRequest<T> implements HttpRequest<T>
 
 
 	/**
-	 * Creates a {@link BufferedRequest} wrapper for the given request with an unlimited buffer size.
+	 * Creates a {@link BufferedRequest} wrapper for the given request with an "unlimited" buffer size.
 	 * 
 	 * @param request
 	 *            The request to buffer.
@@ -64,7 +64,7 @@ public final class BufferedRequest<T> implements HttpRequest<T>
 
 
 	/**
-	 * Creates a {@link BufferedRequest} wrapper for the given request using the given buffer size.
+	 * Creates a {@link BufferedRequest} wrapper for the given request using the given maximum buffer size.
 	 * 
 	 * @param request
 	 *            The request to buffer.
@@ -86,9 +86,9 @@ public final class BufferedRequest<T> implements HttpRequest<T>
 
 
 	@Override
-	public void updateHeaders(HeaderEditor headerEditor)
+	public HeaderList headers()
 	{
-		mRequest.updateHeaders(headerEditor);
+		return mRequest.headers();
 	}
 
 
@@ -100,7 +100,7 @@ public final class BufferedRequest<T> implements HttpRequest<T>
 
 
 	@Override
-	public ResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+	public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
 	{
 		return mRequest.responseHandler(response);
 	}

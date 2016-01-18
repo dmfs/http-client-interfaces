@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpclientinterfaces.utils;
+package org.dmfs.httpclientinterfaces.requestutils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +30,7 @@ import org.dmfs.httpclientinterfaces.HttpRequestEntity;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class BufferedRequestEntity implements HttpRequestEntity
+public final class BufferedRequestEntity implements HttpRequestEntity
 {
 	/**
 	 * The chunk size of our buffer. 16kB should hold most of the smaller requests.
@@ -40,7 +40,7 @@ public class BufferedRequestEntity implements HttpRequestEntity
 	/**
 	 * The buffered entity.
 	 */
-	private HttpRequestEntity mBufferedEntity;
+	private final HttpRequestEntity mBufferedEntity;
 
 	/**
 	 * The buffer.
@@ -50,7 +50,7 @@ public class BufferedRequestEntity implements HttpRequestEntity
 	/**
 	 * The buffer size limit.
 	 */
-	private int mMaxBufferSize;
+	private final int mMaxBufferSize;
 
 
 	public BufferedRequestEntity(HttpRequestEntity bufferedEntity)

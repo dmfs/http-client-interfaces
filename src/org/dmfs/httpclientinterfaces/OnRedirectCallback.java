@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,8 @@ public interface OnRedirectCallback
 	 *            The absolute {@link URI} of the resource that returned the redirect.
 	 * @param newLocation
 	 *            The absolute {@link URI} that was returned by the server as the new location.
-	 * @return <code>true</code> to follow that redirect and resent the request to the new location, <code>false</code> to not follow it.
+	 * @return <code>true</code> to follow that redirect and resent the request to the new location, <code>false</code> to not follow it and throw a
+	 *         {@link RedirectionException} instead.
 	 */
-	public boolean onRedirect(HttpStatus status, URI redirectingLocation, URI newLocation);
+	public boolean followRedirect(HttpStatus status, URI redirectingLocation, URI newLocation);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,15 +30,15 @@ public interface HttpResponseEntity
 {
 
 	/**
-	 * Returns the content type of the entity if known.
+	 * Returns the content type of the entity.
 	 * 
-	 * @return The content type or <code>null</code> if it's not known.
+	 * @return The content type.
 	 */
-	public ContentType contentType();
+	public ContentType contentType() throws IOException;
 
 
 	/**
-	 * Returns the length of the content or a negative number if it's not known.
+	 * Returns the length of the content or a negative number if the length is not known.
 	 * 
 	 * @return The content length or a negative number.
 	 * @throws IOException
@@ -47,11 +47,12 @@ public interface HttpResponseEntity
 
 
 	/**
-	 * Returns the content {@link InputStream} of the entity.
+	 * Returns the content {@link InputStream} of the entity. If you don't consume the entire content, make sure you always close the {@link InputStream}.
 	 * 
-	 * @return An {@link InputStream} or null, if the entity doesn't have any content.
+	 * @return An {@link InputStream}, never null.
 	 * 
 	 * @throws IOException
 	 */
 	public InputStream contentStream() throws IOException;
+
 }

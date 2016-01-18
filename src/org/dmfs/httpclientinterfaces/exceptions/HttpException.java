@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,9 +30,9 @@ public class HttpException extends IOException
 {
 
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = -8468842755271602512L;
+	private static final long serialVersionUID = 0;
 
 
 	/**

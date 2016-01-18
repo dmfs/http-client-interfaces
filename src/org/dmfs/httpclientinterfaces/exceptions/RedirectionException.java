@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,13 +31,13 @@ import org.dmfs.httpclientinterfaces.OnRedirectCallback;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class RedirectionException extends UnhandledStatusError
+public class RedirectionException extends UnexpectedResponseException
 {
 
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = 3852031756610294367L;
+	private static final long serialVersionUID = 0;
 
 	private final URI mRedirectingLocation;
 	private final URI mNewLocation;
@@ -64,7 +64,7 @@ public class RedirectionException extends UnhandledStatusError
 	 * 
 	 * @return A {@link URI}.
 	 */
-	public URI getRedirectingLocation()
+	public URI redirectingLocation()
 	{
 		return mRedirectingLocation;
 	}
@@ -75,7 +75,7 @@ public class RedirectionException extends UnhandledStatusError
 	 * 
 	 * @return A {@link URI} or <code>null</code>.
 	 */
-	public URI getNewLocation()
+	public URI newLocation()
 	{
 		return mNewLocation;
 	}

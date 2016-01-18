@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ public interface HttpRequestEntity
 	/**
 	 * Returns the content type of the entity if known.
 	 * 
-	 * @return The content type or <code>null</code> if it's not known.
+	 * @return The content type or <code>null</code> if no content type is applicable (like when the entity is empty).
 	 */
 	public ContentType contentType();
 

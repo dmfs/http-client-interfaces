@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,41 +21,41 @@ import org.dmfs.httpclientinterfaces.HttpStatus;
 
 
 /**
- * This is a special {@link UnhandledStatusError} for <code>4xx</code> status codes (i.e. client errors).
+ * This is a special {@link UnexpectedResponseException} for <code>4xx</code> status codes (i.e. client errors).
  * 
  * @author Marten Gajda <marten@dmfs.org>
  * 
  * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.5">RFC 7231, section 6.5</a>
  */
-public class ClientError extends UnhandledStatusError
+public class ClientErrorException extends UnexpectedResponseException
 {
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = 3375512006017392390L;
+	private static final long serialVersionUID = 0;
 
 
 	/**
-	 * Create a new {@link ClientError}.
+	 * Create a new {@link ClientErrorException}.
 	 * 
 	 * @param status
 	 *            The status returned by the server.
 	 */
-	public ClientError(HttpStatus status)
+	public ClientErrorException(HttpStatus status)
 	{
-		super(status);
+		this(status, null);
 	}
 
 
 	/**
-	 * Create a new {@link ClientError} with a message.
+	 * Create a new {@link ClientErrorException} with a message.
 	 * 
 	 * @param status
 	 *            The status returned by the server.
 	 * @param message
 	 *            An error message.
 	 */
-	public ClientError(HttpStatus status, String message)
+	public ClientErrorException(HttpStatus status, String message)
 	{
 		super(status, message);
 	}

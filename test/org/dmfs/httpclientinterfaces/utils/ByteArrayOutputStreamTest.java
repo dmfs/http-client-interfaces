@@ -1,4 +1,4 @@
-package org.dmfs.httpclientinterfaces.util;
+package org.dmfs.httpclientinterfaces.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.dmfs.httpclientinterfaces.utils.ByteArrayOutputStream;
+import org.dmfs.httpclientinterfaces.requestutils.ByteArrayOutputStream;
 import org.junit.Test;
 
 

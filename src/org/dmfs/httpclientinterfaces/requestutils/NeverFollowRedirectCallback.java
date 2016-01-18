@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpclientinterfaces;
+package org.dmfs.httpclientinterfaces.requestutils;
 
 import java.net.URI;
+
+import org.dmfs.httpclientinterfaces.HttpStatus;
+import org.dmfs.httpclientinterfaces.OnRedirectCallback;
 
 
 /**
@@ -25,24 +28,24 @@ import java.net.URI;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public final class NeverFollowRedirectionCallback implements OnRedirectCallback
+public final class NeverFollowRedirectCallback implements OnRedirectCallback
 {
 	private final static class SingletonHolder
 	{
 		/**
-		 * A static instance of the {@link NeverFollowRedirectionCallback}. It will be initialized when {@link NeverFollowRedirectionCallback#getInstance()} is
-		 * called the first time.
+		 * A static instance of the {@link NeverFollowRedirectCallback}. It will be initialized when {@link NeverFollowRedirectCallback#getInstance()} is called
+		 * the first time.
 		 */
-		final static NeverFollowRedirectionCallback INSTANCE = new NeverFollowRedirectionCallback();
+		final static NeverFollowRedirectCallback INSTANCE = new NeverFollowRedirectCallback();
 	}
 
 
 	/**
-	 * Returns an instance of {@link NeverFollowRedirectionCallback}.
+	 * Returns an instance of {@link NeverFollowRedirectCallback}.
 	 * 
-	 * @return A static instance of {@link NeverFollowRedirectionCallback}.
+	 * @return A static instance of {@link NeverFollowRedirectCallback}.
 	 */
-	public static NeverFollowRedirectionCallback getInstance()
+	public static NeverFollowRedirectCallback getInstance()
 	{
 		return SingletonHolder.INSTANCE;
 	}
@@ -51,13 +54,13 @@ public final class NeverFollowRedirectionCallback implements OnRedirectCallback
 	/**
 	 * Don't Instantiate this, use {@link #getInstance()}. Instead.
 	 */
-	private NeverFollowRedirectionCallback()
+	private NeverFollowRedirectCallback()
 	{
 	}
 
 
 	@Override
-	public boolean onRedirect(HttpStatus status, URI redirectingLocation, URI newLocation)
+	public boolean followRedirect(final HttpStatus status, final URI redirectingLocation, final URI newLocation)
 	{
 		return false;
 	}

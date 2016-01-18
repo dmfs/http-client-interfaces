@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.regex.Pattern;
  * Note that {@link #equals(Object)} returns <code>true</code> for two ContentTypes if {@link #mainType} and {@link #subType} equal. Parameters are not taken
  * into account. Use {@link #same(ContentType)} to take parameters into account when comparing two {@link ContentType}s.
  * </p>
+ * TODO: make this an interface
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class ContentType
+public final class ContentType
 {
 	/**
 	 * A pattern that matches the separator in content type strings.
@@ -89,8 +90,8 @@ public class ContentType
 			return;
 		}
 		String parts[] = SEMICOLON.split(contentType, 0);
-		// remove any white spaces from the actual type
-		type = parts[0].trim();
+		// remove any white spaces from the actual type and convert to lower case (MediaTypes are case-insensitive)
+		type = parts[0].trim().toLowerCase(Locale.ENGLISH);
 
 		// split main type and sub-type
 		int slashIndex = type.indexOf('/');
@@ -223,6 +224,18 @@ public class ContentType
 	}
 
 
+	public boolean isAnySubType()
+	{
+		return "*".equals(subType);
+	}
+
+
+	public boolean isAnyType()
+	{
+		return "*".equals(mainType) && isAnySubType();
+	}
+
+
 	@Override
 	public String toString()
 	{
@@ -231,12 +244,29 @@ public class ContentType
 		{
 			for (Parameter param : mParams.values())
 			{
+				if ("q".equals(param.attribute))
+				{
+					// skip "q" since it has a special meaning in Accept headers. We append it separately at the end
+					continue;
+				}
+
 				result.append("; ");
 
 				// the code below is more efficient than just calling result.append(param.toString());
 				result.append(param.attribute);
 				result.append("=\"");
 				result.append(param.value);
+				result.append("\"");
+			}
+
+			// handle q separately
+			if (mParams.containsKey("q"))
+			{
+				Parameter q = mParams.get("q");
+				result.append("; ");
+				result.append(q.attribute);
+				result.append("=\"");
+				result.append(q.value);
 				result.append("\"");
 			}
 		}
@@ -265,6 +295,31 @@ public class ContentType
 
 
 	/**
+	 * Returns whether this {@link ContentType} equals any of the given content types.
+	 * 
+	 * @param contentTypes
+	 *            Non-empty list of other {@link ContentType}s.
+	 * @return <code>true</code> if this equals one of the given {@link ContentType}s, <code>false</code> otherwise.
+	 */
+	public boolean equalsAny(ContentType... contentTypes)
+	{
+		if (contentTypes == null || contentTypes.length == 0)
+		{
+			throw new IllegalArgumentException("no content types given");
+		}
+
+		for (ContentType contentType : contentTypes)
+		{
+			if (equals(contentType))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
 	 * Indicates whether another {@link ContentType} is the same as this one. In contrast to {@link #equals(Object)} this also takes any parameters into
 	 * account.
 	 * 
@@ -274,7 +329,21 @@ public class ContentType
 	 */
 	public boolean same(ContentType other)
 	{
-		return equals(other) && (mParams == null && other.mParams == null || mParams.equals(other.mParams));
+		return equals(other) && (mParams == null && other.mParams == null || mParams != null && mParams.equals(other.mParams));
+	}
+
+
+	/**
+	 * Checks if another content type matches this content type. The result is like {@link #equals(Object)} returns it, except that this method honors place
+	 * holders in this instance. Parameters are not taken into account.
+	 * 
+	 * @param other
+	 *            The {@link ContentType} to match.
+	 * @return If the other {@link ContentType} matches this content type.
+	 */
+	public boolean matches(ContentType other)
+	{
+		return equals(other) || isAnyType() || (isAnySubType() && mainType != null && mainType.equals(other.mainType));
 	}
 
 /**
@@ -369,6 +438,26 @@ public class ContentType
 		public String toString()
 		{
 			return attribute + "=\"" + value + "\"";
+		}
+
+
+		@Override
+		public int hashCode()
+		{
+			return attribute.hashCode() * 31 + value.hashCode();
+		}
+
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (!(obj instanceof Parameter))
+			{
+				return false;
+			}
+
+			Parameter other = (Parameter) obj;
+			return attribute.equals(other.attribute) && value.equals(other.value);
 		}
 	}
 }

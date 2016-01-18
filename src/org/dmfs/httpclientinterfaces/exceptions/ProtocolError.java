@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,9 @@ package org.dmfs.httpclientinterfaces.exceptions;
 public class ProtocolError extends Exception
 {
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = 7175066856358461915L;
+	private static final long serialVersionUID = 0;
 
 
 	/**

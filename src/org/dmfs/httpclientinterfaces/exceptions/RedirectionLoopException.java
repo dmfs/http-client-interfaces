@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,16 +27,16 @@ import org.dmfs.httpclientinterfaces.HttpStatus;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class RedirectionLoopException extends RedirectionException
+public final class RedirectionLoopException extends RedirectionException
 {
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = -4178950794884142208L;
+	private static final long serialVersionUID = 0;
 
 
 	/**
-	 * Create a new redirection loop exception. for the given status, source and destination.
+	 * Create a new redirection loop exception for the given status, source and destination.
 	 * 
 	 * @param statusCode
 	 *            The status of the redirect.
@@ -45,7 +45,7 @@ public class RedirectionLoopException extends RedirectionException
 	 * @param newLocation
 	 *            The destination of the redirect.
 	 */
-	public RedirectionLoopException(HttpStatus statusCode, URI redirectingLocation, URI newLocation)
+	public RedirectionLoopException(final HttpStatus statusCode, final URI redirectingLocation, final URI newLocation)
 	{
 		super(statusCode, redirectingLocation, newLocation);
 	}

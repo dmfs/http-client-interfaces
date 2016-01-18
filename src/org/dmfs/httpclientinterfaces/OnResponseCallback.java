@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,9 @@
  */
 
 package org.dmfs.httpclientinterfaces;
+
+import java.net.URI;
+
 
 /**
  * Callback for asynchronous response handling. This will be called by {@link HttpRequestExecutor#execute(java.net.URI, IHttpRequest, IResponseCallback)} or
@@ -38,19 +41,25 @@ public interface OnResponseCallback<T>
 
 	/**
 	 * Called when the response object has been parsed and handled successfully. The parameter passed to this method is the result of
-	 * {@link ResponseHandler#handleResponse(IHttpResponse)}.
+	 * {@link HttpResponseHandler#handleResponse(IHttpResponse)}.
 	 * 
+	 * @param requestUri
+	 *            The {@link URI} the request was sent to.
+	 * @param respondingUri
+	 *            The {@link URI} that the actual response was returned from.
 	 * @param response
-	 *            The response object as returned by {@link ResponseHandler#handleResponse(IHttpResponse)}.
+	 *            The response object as returned by {@link HttpResponseHandler#handleResponse(IHttpResponse)}.
 	 */
-	public void onResponse(T response);
+	public void onResponse(URI requestUri, URI respondingUri, T response);
 
 
 	/**
 	 * Called if any error occurred during the execution of the request.
 	 * 
+	 * @param requestUri
+	 *            The {@link URI} the request was sent to.
 	 * @param e
 	 *            The {@link Exception} that was thrown.
 	 */
-	public void onError(Exception e);
+	public void onError(URI requestUri, Exception e);
 }

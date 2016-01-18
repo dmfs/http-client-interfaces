@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,14 +23,13 @@ import java.net.URI;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolError;
 import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
 import org.dmfs.httpclientinterfaces.exceptions.RedirectionException;
-import org.dmfs.httpclientinterfaces.exceptions.UnhandledStatusError;
+import org.dmfs.httpclientinterfaces.exceptions.UnexpectedResponseException;
 
 
 /**
- * The interface of an instances that knows how to execute an {@link HttpRequest}.
+ * The interface of an instance that knows how to execute an {@link HttpRequest}.
  * <p />
- * It's worth noting, that the request {@link URI} is never determined by the request. All execute methods take a dedicated {@link URI} parameter. It's easy to
- * extend {@link HttpRequest} and write a wrapper around {@link HttpRequestExecutor} to let the request return the URI. However, that's left to the implementer.
+ * It's worth noting, that the request {@link URI} is never determined by the request. All execute methods take a dedicated {@link URI} parameter.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
@@ -46,7 +45,8 @@ public interface HttpRequestExecutor
 	 *            The request to execute.
 	 * @return The result, i.e. the handled server response.
 	 */
-	public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnhandledStatusError;
+	public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException,
+		UnexpectedResponseException;
 
 
 	/**
@@ -62,7 +62,7 @@ public interface HttpRequestExecutor
 	 * @return The result, i.e. the handled server response.
 	 */
 	public <T> T execute(URI uri, HttpRequest<T> request, OnRedirectCallback redirectionCallback) throws IOException, ProtocolError, ProtocolException,
-		RedirectionException, UnhandledStatusError;
+		RedirectionException, UnexpectedResponseException;
 
 
 	/**
@@ -82,8 +82,8 @@ public interface HttpRequestExecutor
 
 	/**
 	 * Sends the given {@link HttpRequest} to the given {@link URI} and calls an {@link OnResponseCallback} with the result. This method uses a custom
-	 * {@link OnRedirectCallback} to handle any redirections. This method may be executed asynchronously, so the caller must be aware that the result may not
-	 * be available yet, when the method returns.
+	 * {@link OnRedirectCallback} to handle any redirections. This method may be executed asynchronously, so the caller must be aware that the result may not be
+	 * available yet, when the method returns.
 	 * 
 	 * @param uri
 	 *            The URI to send this request to.

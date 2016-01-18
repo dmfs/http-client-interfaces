@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,31 +27,31 @@ import org.dmfs.httpclientinterfaces.HttpStatus;
  * 
  * @see <a href="http://tools.ietf.org/html/rfc7235#section-3.1">RFC 7235, section 3.1</a>
  */
-public class UnauthorizedError extends ClientError
+public class UnauthorizedException extends ClientErrorException
 {
 
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = -820625709820025814L;
+	private static final long serialVersionUID = 0;
 
 
 	/**
-	 * Create a new {@link UnauthorizedError}.
+	 * Create a new {@link UnauthorizedException}.
 	 */
-	public UnauthorizedError()
+	public UnauthorizedException()
 	{
 		super(HttpStatus.UNAUTHORIZED);
 	}
 
 
 	/**
-	 * Create a new {@link UnauthorizedError} with a message.
+	 * Create a new {@link UnauthorizedException} with a message.
 	 * 
 	 * @param message
 	 *            An error message.
 	 */
-	public UnauthorizedError(String message)
+	public UnauthorizedException(String message)
 	{
 		super(HttpStatus.UNAUTHORIZED, message);
 	}

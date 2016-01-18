@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpclientinterfaces.utils;
+package org.dmfs.httpclientinterfaces.requestutils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +29,7 @@ import java.util.List;
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
-public class ByteArrayOutputStream extends OutputStream
+public final class ByteArrayOutputStream extends OutputStream
 {
 	/**
 	 * The default minimum chunk size.
@@ -62,12 +62,12 @@ public class ByteArrayOutputStream extends OutputStream
 	private int mPosInChunk;
 
 	/**
-	 * The overall lenght of the written content.
+	 * The overall length of the written content.
 	 */
 	private int mLength;
 
 	/**
-	 * The overal buffer size limit.
+	 * The overall buffer size limit.
 	 */
 	private final int mBufferSizeLimit;
 
@@ -244,7 +244,7 @@ public class ByteArrayOutputStream extends OutputStream
 
 
 	/**
-	 * Get the overall lenght of the written content.
+	 * Get the overall length of the written content.
 	 * 
 	 * @return The number of bytes written to this {@link ByteArrayOutputStream}.
 	 */

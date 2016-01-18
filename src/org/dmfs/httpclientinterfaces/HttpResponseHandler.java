@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,14 +31,14 @@ import org.dmfs.httpclientinterfaces.exceptions.ProtocolException;
  * @param <T>
  *            The type of the response object returned.
  */
-public interface ResponseHandler<T>
+public interface HttpResponseHandler<T>
 {
 	/**
-	 * Actually handles the {@link HttpResponse}.
+	 * Actually handles the {@link HttpResponse}. This method "converts" the response into an object of type T.
 	 * 
 	 * @param response
 	 *            The response object.
-	 * @return An object that represents the result, may be <code>null</code>.
+	 * @return An object that represents the result, may be <code>null</code> if no result is expected.
 	 * @throws IOException
 	 * @throws ProtocolError
 	 * @throws ProtocolException

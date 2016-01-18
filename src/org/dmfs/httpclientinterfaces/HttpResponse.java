@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,15 @@
 package org.dmfs.httpclientinterfaces;
 
 import java.net.URI;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import org.dmfs.httpclientinterfaces.headers.Header;
+import org.dmfs.httpclientinterfaces.headers.HeaderType;
 
 
 /**
  * An interface of an HTTP response object.
- * 
- * <p />
- * Find a better way to handle/return/iterate headers.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  */
@@ -40,42 +42,41 @@ public interface HttpResponse
 
 
 	/**
-	 * Returns the number of headers of the given name.
+	 * Checks whether the response contains at least one header of the given {@link HeaderType}.
 	 * 
-	 * @param header
-	 *            The name of the header.
-	 * @return The number of occurrences of the given header.
+	 * @param headerType
+	 *            The {@link HeaderType} of the header to check.
+	 * @return <code>true</code> if there is at least one such header, <code>false</code> otherwise.
 	 */
-	public int headerCount(String header);
+	public <T> boolean hasHeader(HeaderType<T> headerType);
 
 
 	/**
-	 * Returns the first header of the given name.
+	 * Returns the first {@link Header} of the given {@link HeaderType}. Use {@link #hasHeader(HeaderType)} before you call this to make sure such a
+	 * {@link Header} actually exists.
 	 * 
-	 * @param header
-	 *            The name of the header.
-	 * @return The value of the header or <code>null</code> if no header with that name exists.
+	 * @param headerType
+	 *            The {@link HeaderType} of the {@link Header} to return.
+	 * @return The first {@link Header} of the given type.
+	 * 
+	 * @throws NoSuchElementException
+	 *             if no such {@link Header} exists.
 	 */
-	public String header(String header);
+	public <T> Header<T> firstHeader(HeaderType<T> headerType) throws NoSuchElementException;
 
 
 	/**
-	 * Returns a header identified by its name and position, i.e. it returns the n-th header of that name.
+	 * Returns an {@link Iterator} that iterates all {@link Header}s of the given {@link HeaderType}.
 	 * 
-	 * @param header
-	 *            The name of the header.
-	 * @param n
-	 *            The position of the header to return.
-	 * @return The value of the header.
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             if n < 0 or n >= {@link #getHeaderCount(String)} for the same header.
+	 * @param headerType
+	 *            The {@link HeaderType} of the {@link Header}s to return.
+	 * @return An {@link Iterator} of {@link Header}s, may be empty (not <code>null</code>).
 	 */
-	public String header(String header, int n);
+	public <T> Iterator<Header<T>> headers(HeaderType<T> headerType);
 
 
 	/**
-	 * Returns an {@link HttpResponseEntity} representing the data in the response. This is guaranteed to be non-<code>null</code>.
+	 * Returns an {@link HttpResponseEntity} representing the data in the response.
 	 * 
 	 * @return An {@link HttpResponseEntity}.
 	 */

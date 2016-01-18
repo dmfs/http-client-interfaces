@@ -23,6 +23,9 @@ public class HttpStatusTest
 		assertEquals(HttpStatus.OK, HttpStatus.fromStatusLine("HTTP/1.1 200 OK"));
 		assertEquals(HttpStatus.BAD_REQUEST, HttpStatus.fromStatusLine("HTTP/1.1 400 Bad Request"));
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.fromStatusLine("HTTP/1.1 500 Internal Server Error"));
+		assertEquals(533, HttpStatus.fromStatusLine("HTTP/1.1 533 My fancy custom error").statusCode());
+		assertEquals("HTTP/1.1 533 My fancy custom error", HttpStatus.fromStatusLine("HTTP/1.1 533 My fancy custom error").statusLine(1, 1));
+		assertEquals("My fancy custom error", HttpStatus.fromStatusLine("HTTP/1.1 533 My fancy custom error").reason());
 	}
 
 

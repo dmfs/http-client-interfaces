@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Marten Gajda <marten@dmfs.org>
+ * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,46 +17,58 @@
 
 package org.dmfs.httpclientinterfaces.exceptions;
 
+import java.net.URI;
+
 import org.dmfs.httpclientinterfaces.HttpStatus;
 
 
 /**
- * This is a special {@link UnhandledStatusError} for <code>5xx</code> status codes (i.e. server errors).
+ * This Exception is thrown when an unhandled {@link HttpStatus#NOT_FOUND} status code occurs.
  * 
  * @author Marten Gajda <marten@dmfs.org>
  * 
- * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.6">RFC 7231, section 6.6</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">RFC 7231, section 6.5.4</a>
  */
-public class ServerError extends UnhandledStatusError
+public class NotFoundException extends ClientErrorException
 {
+
 	/**
-	 * Generated serial UID.
+	 * Serial UID.
 	 */
-	private static final long serialVersionUID = 4277875851832777245L;
+	private static final long serialVersionUID = 0;
+
+	private final URI mUri;
 
 
 	/**
-	 * Create a new {@link ServerError}.
-	 * 
-	 * @param status
-	 *            The status returned by the server.
+	 * Create a new {@link NotFoundException}.
 	 */
-	public ServerError(HttpStatus status)
+	public NotFoundException(URI uri)
 	{
-		super(status);
+		this(uri, null);
 	}
 
 
 	/**
-	 * Create a new {@link ServerError} with a message.
+	 * Create a new {@link NotFoundException} with a message.
 	 * 
-	 * @param status
-	 *            The status returned by the server.
 	 * @param message
 	 *            An error message.
 	 */
-	public ServerError(HttpStatus status, String message)
+	public NotFoundException(URI uri, String message)
 	{
-		super(status, message);
+		super(HttpStatus.NOT_FOUND, message);
+		mUri = uri;
+	}
+
+
+	/**
+	 * Returns the URI that was not found.
+	 * 
+	 * @return A URI.
+	 */
+	public URI uri()
+	{
+		return mUri;
 	}
 }
